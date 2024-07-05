@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_64d7g"]
 [ext_resource type="Texture2D" uid="uid://c0jbl1bhnljlo" path="res://Sprites/lavaboy-walking.png" id="1_n8su4"]
-[ext_resource type="PackedScene" uid="uid://bi727h224xcyb" path="res://Scenes/Sword.tscn" id="2_2g352"]
+[ext_resource type="PackedScene" uid="uid://bt8bdy5mjvapu" path="res://Scenes/SwordFullSwing.tscn" id="2_xu1pd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aftcr"]
 size = Vector2(2.5, 17.5317)
@@ -48,9 +48,11 @@ scale = Vector2(3, 3)
 collision_mask = 4
 script = ExtResource("1_64d7g")
 
-[node name="Sword" parent="." instance=ExtResource("2_2g352")]
+[node name="Sword2" parent="." instance=ExtResource("2_xu1pd")]
+position = Vector2(-0.666667, 0)
 scale = Vector2(1, 1)
-swingSpeed = 100.0
+windupSpeed = 900.0
+swingSpeed = 1000.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.583, 2.09917)
@@ -59,5 +61,7 @@ shape = SubResource("RectangleShape2D_aftcr")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_pgkid")
 animation = &"walk"
+frame = 2
+frame_progress = 0.485478
 
-[connection signal="Launch" from="Sword" to="." method="_on_sword_launch"]
+[connection signal="Launch" from="Sword2" to="." method="_on_sword_2_launch"]

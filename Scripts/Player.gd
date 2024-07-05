@@ -17,6 +17,10 @@ func captureInput():
 	var direction = Input.get_axis("walk_left", "walk_right") * moveSpeed
 	if direction != 0:
 		sprite.flip_h = direction < 0
+		sprite.play()
+	else:
+		sprite.stop()
+
 	velocity.x += direction
 
 func _physics_process(delta):
@@ -28,5 +32,10 @@ func _physics_process(delta):
 
 
 func _on_sword_launch():
+	print_debug("launching")
+	velocity.y = -launchForce
+
+
+func _on_sword_2_launch():
 	print_debug("launching")
 	velocity.y = -launchForce
