@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_64d7g"]
 [ext_resource type="Texture2D" uid="uid://c0jbl1bhnljlo" path="res://Sprites/lavaboy-walking.png" id="1_n8su4"]
-[ext_resource type="PackedScene" uid="uid://bt8bdy5mjvapu" path="res://Scenes/SwordFullSwing.tscn" id="2_xu1pd"]
+[ext_resource type="PackedScene" uid="uid://boxw8nhvi4650" path="res://Scenes/SwordClickSwing.tscn" id="3_ua3y4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aftcr"]
 size = Vector2(2.5, 17.5317)
@@ -48,12 +48,6 @@ scale = Vector2(3, 3)
 collision_mask = 4
 script = ExtResource("1_64d7g")
 
-[node name="Sword2" parent="." instance=ExtResource("2_xu1pd")]
-position = Vector2(-0.666667, 0)
-scale = Vector2(1, 1)
-windupSpeed = 900.0
-swingSpeed = 1000.0
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.583, 2.09917)
 shape = SubResource("RectangleShape2D_aftcr")
@@ -64,4 +58,6 @@ animation = &"walk"
 frame = 2
 frame_progress = 0.485478
 
-[connection signal="Launch" from="Sword2" to="." method="_on_sword_2_launch"]
+[node name="SwordClickSwing" parent="." instance=ExtResource("3_ua3y4")]
+
+[connection signal="Launch" from="SwordClickSwing" to="." method="_on_sword_click_swing_launch"]

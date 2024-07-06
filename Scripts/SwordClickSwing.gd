@@ -13,6 +13,8 @@ var collider: CollisionShape2D
 var swordBody: Node2D
 var player: CharacterBody2D
 
+
+var swingTimer: Timer
 var chargedRotation: float
 var swinging: bool
 var isLeftOfMouse: bool
@@ -22,16 +24,16 @@ var maxReverseSwingRotation: float = 70
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	swingTimer = get_node("ClickTimer")
 	player = get_parent()
 	swordBody = get_node("SwordBody")
 	collider = get_node("SwordBody/Area2D/CollisionShape2D")
 	swinging = false
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	rotationPoint.global_rotation_degrees = 0
-	swing(delta)
 	collider.disabled = !swinging
+	swing(delta)
 
 func swing(delta):
 	if swinging:
@@ -44,43 +46,44 @@ func swing(delta):
 				swinging = false
 		else:
 			swordBody.global_rotation_degrees -= amountToRotate
-			print(swordBody.global_rotation_degrees)
-			print(amountToRotate)
 
 			if swordBody.global_rotation_degrees <= maxReverseSwingRotation && swordBody.global_rotation_degrees > 0:
 				swinging = false
 
-	elif Input.is_action_pressed("swing") && !swinging:
-		chargedRotation += delta * windupSpeed
-		chargedRotation = clampf(chargedRotation, 0, -windbackDegrees) 
+	elif Input.is_action_just_pressed("swing") && !swinging:
+		swinging = true
 
+	else:
 		var mousePos = get_global_mouse_position()
 		isLeftOfMouse = player.global_position.x < mousePos.x
 
 		var point = rotationPoint.get_angle_to(mousePos)
 		var degrees = rad_to_deg(point)
+		
+		var direction = 90
 		if isLeftOfMouse:
-			degrees -= chargedRotation
-			swordBody.global_rotation_degrees = max(windbackDegrees - windbackOffset, degrees)
-		else:
-			degrees += chargedRotation
-			var minRotation = windbackDegrees + windbackOffset
-			print(degrees, minRotation)
-			swordBody.global_rotation_degrees = clampf(degrees, minRotation, degrees)
-			# swordBody.global_rotation_degrees = min(windbackDegrees + windbackOffset, degrees)
-			swordBody.global_rotation_degrees = degrees
+			direction *= -1
 
-	elif chargedRotation != 0:
-		chargedRotation = 0
-		swinging = true
+		swordBody.global_rotation_degrees = degrees + direction
 
-	else:
-		var mousePos = get_global_mouse_position()
-		swordBody.look_at(mousePos)
+# func _on_area_2d_body_entered(body):
+# 	if !swinging:
+# 		return
+
+# 	print("collided")
+# 	swinging = false
+# 	collider.set_deferred("disabled", true)
+# 	print(swordBody.rotation)
+# 	Launch.emit(swordBody.global_rotation)
+# 	# maybe kick up some animation at the trigger point
 
 func _on_area_2d_body_entered(body):
-	chargedRotation = 0
+	if !swinging:
+		return
+
+	print("collided")
 	swinging = false
-	Launch.emit("sup")
 	collider.set_deferred("disabled", true)
+	print(swordBody.rotation)
+	Launch.emit(swordBody.global_rotation)
 	# maybe kick up some animation at the trigger point

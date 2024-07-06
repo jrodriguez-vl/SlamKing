@@ -3,8 +3,9 @@
 [ext_resource type="Script" path="res://Scripts/Sword.gd" id="1_a7cac"]
 [ext_resource type="Texture2D" uid="uid://bd3kdfc1vg2wn" path="res://Sprites/bigolsword3.png" id="2_07gwn"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_53oqm"]
-size = Vector2(19.25, 5.75)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lfhh6"]
+radius = 3.5
+height = 19.5
 
 [node name="Sword" type="Node2D" node_paths=PackedStringArray("rotationPoint")]
 scale = Vector2(4, 4)
@@ -27,7 +28,8 @@ collision_layer = 2
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SwordBody/Area2D"]
-position = Vector2(15.505, 0)
-shape = SubResource("RectangleShape2D_53oqm")
+position = Vector2(16.75, -0.25)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_lfhh6")
 
 [connection signal="body_entered" from="SwordBody/Area2D" to="." method="_on_area_2d_body_entered"]

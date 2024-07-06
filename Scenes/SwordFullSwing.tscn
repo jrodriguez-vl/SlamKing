@@ -7,7 +7,6 @@
 size = Vector2(19.25, 5.75)
 
 [node name="SwordFullSwing" type="Node2D" node_paths=PackedStringArray("rotationPoint")]
-scale = Vector2(4, 4)
 script = ExtResource("1_0brtt")
 rotationPoint = NodePath("RotationPoint")
 swingSpeed = 100.0
