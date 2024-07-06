@@ -1,9 +1,10 @@
 extends CharacterBody2D
 
 @export var moveSpeed: float = 150
+@export var maxMoveSpeed: float = 250
 @export var gravity: float = 1500
 @export var launchForce: float = 500
-@export var floorFriction: float  = .5
+@export var floorFriction: float  = .1
 @export var airFriction: float  = .01
 
 var sprite: AnimatedSprite2D
@@ -11,7 +12,6 @@ var sprite: AnimatedSprite2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	sprite = $AnimatedSprite2D
-	pass # Replace with function body.
 
 
 func captureInput():
@@ -20,16 +20,19 @@ func captureInput():
 	else:
 		velocity.x = lerpf(velocity.x, 0, airFriction)
 
-	# velocity.x = 0
 	var direction = Input.get_axis("walk_left", "walk_right") * moveSpeed
 	if direction != 0:
 		sprite.flip_h = direction < 0
 		sprite.play()
 	else:
+		if is_on_floor():
+			velocity.x = lerpf(velocity.x, 0, .5)
 		sprite.stop()
 
-	if (direction < 0 && velocity.x >=0) || (direction > 0 && velocity.x <= 0) || (!abs(velocity.x) > moveSpeed):
+	if (direction < 0 && velocity.x >=0) || (direction > 0 && velocity.x <= 0) || (!abs(velocity.x) > maxMoveSpeed):
 		velocity.x += direction
+
+	print(velocity)
 
 func _physics_process(delta):
 	if !is_on_floor():
