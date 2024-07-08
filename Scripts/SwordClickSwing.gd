@@ -17,6 +17,7 @@ var player: CharacterBody2D
 var swingTimer: Timer
 var chargedRotation: float
 var swinging: bool
+var waitingForNextSwing: bool = true
 var isLeftOfMouse: bool
 
 var windbackDegrees: float = -90
@@ -24,7 +25,7 @@ var maxReverseSwingRotation: float = 70
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	swingTimer = get_node("ClickTimer")
+	swingTimer = get_node("SwingTimer")
 	player = get_parent()
 	swordBody = get_node("SwordBody")
 	collider = get_node("SwordBody/Area2D/CollisionShape2D")
@@ -50,8 +51,10 @@ func swing(delta):
 			if swordBody.global_rotation_degrees <= maxReverseSwingRotation && swordBody.global_rotation_degrees > 0:
 				swinging = false
 
-	elif Input.is_action_just_pressed("swing") && !swinging:
+	elif Input.is_action_just_pressed("swing") && !swinging && waitingForNextSwing:
 		swinging = true
+		waitingForNextSwing = false
+		swingTimer.start()
 
 	else:
 		var mousePos = get_global_mouse_position()
@@ -81,9 +84,14 @@ func _on_area_2d_body_entered(body):
 	if !swinging:
 		return
 
-	print("collided")
 	swinging = false
 	collider.set_deferred("disabled", true)
 	print(swordBody.rotation)
 	Launch.emit(swordBody.global_rotation)
 	# maybe kick up some animation at the trigger point
+
+
+func _on_click_timer_timeout():
+	print("timeout")
+	
+	waitingForNextSwing = true

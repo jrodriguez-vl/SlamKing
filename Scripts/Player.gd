@@ -32,7 +32,6 @@ func captureInput():
 	if (direction < 0 && velocity.x >=0) || (direction > 0 && velocity.x <= 0) || (!abs(velocity.x) > maxMoveSpeed):
 		velocity.x += direction
 
-	print(velocity)
 
 func _physics_process(delta):
 	if !is_on_floor():
@@ -43,29 +42,12 @@ func _physics_process(delta):
 
 func _on_sword_click_swing_launch(contactRad):
 	var smackVelocity = Vector2(0, 0)
-	print(contactRad)
 	contactRad = wrapf(contactRad,0,TAU)
-	print(contactRad)
-
 
 	smackVelocity = Vector2.RIGHT.rotated(contactRad + (PI / 2))
-	var fourthLeftTop = PI + (PI / 4) 
-	var fourthRightTop = (2 * PI) - (PI / 4)
-
-	var eighthLeftTop = PI + (PI / 4) 
-	var eightRightTop = (2 * PI) - (PI / 4)
-
-	var isTopLeftToMid = contactRad > PI && contactRad < eighthLeftTop
-	var isTopRightToMid = contactRad < 2 * PI && contactRad > eightRightTop
-
-	#hitting the upper portions of the wall on the left and the right 
-	# if (contactRad > fourthLeftTop && contactRad < fourthRightTop) || isTopLeftToMid || isTopRightToMid :
-	if contactRad >= PI && contactRad <= 2 * PI:
-		smackVelocity.y = 0
 
 	if contactRad > PI / 2 && contactRad < (2 * PI) - (PI / 2):
 		smackVelocity *= -1
 
 	velocity.y += -launchForce * smackVelocity.y
 	velocity.x += -launchForce * smackVelocity.x
-	print(velocity)
