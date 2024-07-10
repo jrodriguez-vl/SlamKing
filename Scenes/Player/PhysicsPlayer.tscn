@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://56da7j1fq0dc"]
+[gd_scene load_steps=11 format=3 uid="uid://56da7j1fq0dc"]
 
 [ext_resource type="Script" path="res://Scripts/PPlayer.gd" id="1_g7471"]
 [ext_resource type="Texture2D" uid="uid://c0jbl1bhnljlo" path="res://Sprites/lavaboy-walking.png" id="1_qq0ig"]
 [ext_resource type="PackedScene" uid="uid://b5f6bo82umumv" path="res://Scenes/Weapons/PhysicsSword.tscn" id="2_mba7f"]
+[ext_resource type="Script" path="res://Scripts/PlayerCam.gd" id="4_wu5yq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1rd0u"]
 atlas = ExtResource("1_qq0ig")
@@ -44,8 +45,16 @@ animations = [{
 size = Vector2(3.71, 17.24)
 
 [node name="PhysicsPlayer" type="CharacterBody2D"]
-collision_mask = 4
+collision_mask = 6
 script = ExtResource("1_g7471")
+
+[node name="PinJoint2D" type="PinJoint2D" parent="."]
+node_a = NodePath("..")
+node_b = NodePath("PhysicsSword")
+disable_collision = false
+
+[node name="PhysicsSword" parent="PinJoint2D" instance=ExtResource("2_mba7f")]
+position = Vector2(-4, -53)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(4, 4)
@@ -56,9 +65,5 @@ position = Vector2(-2.625, 9.46)
 scale = Vector2(4, 4)
 shape = SubResource("RectangleShape2D_7ood7")
 
-[node name="PinJoint2D" type="PinJoint2D" parent="."]
-node_a = NodePath("..")
-node_b = NodePath("PhysicsSword")
-
-[node name="PhysicsSword" parent="PinJoint2D" instance=ExtResource("2_mba7f")]
-position = Vector2(-3, -43)
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("4_wu5yq")

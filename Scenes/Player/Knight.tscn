@@ -116,4 +116,7 @@ position = Vector2(-2.5, 1.29)
 shape = SubResource("RectangleShape2D_52tli")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
 script = ExtResource("3_mg8q3")
+
+[connection signal="Launch" from="SwordClickSwing" to="." method="_on_sword_click_swing_launch"]

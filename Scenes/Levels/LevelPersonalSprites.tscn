@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://cfw0tdti3qfsh"]
+[gd_scene load_steps=7 format=3 uid="uid://cfw0tdti3qfsh"]
 
 [ext_resource type="PackedScene" uid="uid://77bv584i3qjx" path="res://Scenes/GrassFloor.tscn" id="1_fkwbw"]
-[ext_resource type="PackedScene" uid="uid://bf257cbx8y3si" path="res://Scenes/Player/Knight.tscn" id="2_bwvu0"]
-[ext_resource type="PackedScene" uid="uid://bun0ox3ts81ad" path="res://Scenes/Player/Player.tscn" id="2_jcdje"]
+[ext_resource type="PackedScene" uid="uid://56da7j1fq0dc" path="res://Scenes/Player/PhysicsPlayer.tscn" id="2_mtsnu"]
+[ext_resource type="Texture2D" uid="uid://byo28xut1qp7p" path="res://Sprites/PotentialAssets/FreePlatformerNA/Background/CloudsBack.png" id="3_pcygd"]
+[ext_resource type="Texture2D" uid="uid://t2jmxb64gaia" path="res://Sprites/PotentialAssets/FreePlatformerNA/Background/CloudsFront.png" id="4_g0ptc"]
+[ext_resource type="Texture2D" uid="uid://hic4v11xt7l7" path="res://Sprites/PotentialAssets/FreePlatformerNA/Background/BGBack.png" id="5_hx08b"]
+[ext_resource type="Texture2D" uid="uid://ccg2bqex4lj1e" path="res://Sprites/PotentialAssets/FreePlatformerNA/Background/BGFront.png" id="6_suvr1"]
 
 [node name="Level1" type="Node2D"]
 
@@ -78,9 +81,31 @@ position = Vector2(839, -49)
 position = Vector2(37, 430)
 scale = Vector2(2, 9.085)
 
-[node name="Knight" parent="." instance=ExtResource("2_bwvu0")]
-position = Vector2(365, 489)
+[node name="PhysicsPlayer" parent="." instance=ExtResource("2_mtsnu")]
+position = Vector2(437, 211)
 
-[node name="Player" parent="." instance=ExtResource("2_jcdje")]
-position = Vector2(187, 470)
-launchForce = 1000.0
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.2, 0.2)
+motion_mirroring = Vector2(2048, 0)
+
+[node name="Sky" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(0, 149.665)
+scale = Vector2(4, 4)
+texture = ExtResource("3_pcygd")
+
+[node name="Clouds" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(0, 151)
+scale = Vector2(4, 4)
+texture = ExtResource("4_g0ptc")
+
+[node name="BGBack" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(0, 157)
+scale = Vector2(4, 4)
+texture = ExtResource("5_hx08b")
+
+[node name="BgFront" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(0, 151)
+scale = Vector2(4, 4)
+texture = ExtResource("6_suvr1")
