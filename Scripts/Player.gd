@@ -40,7 +40,7 @@ func _physics_process(delta):
 	captureInput()
 	move_and_slide()
 
-func _on_sword_click_swing_launch(contactRad):
+func _on_sword_click_swing_launch(contactRad: float, isTheTip: bool):
 	var smackVelocity = Vector2(0, 0)
 	contactRad = wrapf(contactRad,0,TAU)
 
@@ -48,6 +48,9 @@ func _on_sword_click_swing_launch(contactRad):
 
 	if contactRad > PI / 2 && contactRad < (2 * PI) - (PI / 2):
 		smackVelocity *= -1
+
+	if isTheTip:
+		smackVelocity.y = 0
 
 	velocity.y += -launchForce * smackVelocity.y
 	velocity.x += -launchForce * smackVelocity.x

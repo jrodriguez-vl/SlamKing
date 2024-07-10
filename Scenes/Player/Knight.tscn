@@ -1,0 +1,119 @@
+[gd_scene load_steps=19 format=3 uid="uid://bf257cbx8y3si"]
+
+[ext_resource type="Script" path="res://Scripts/Knight.gd" id="1_hjfc1"]
+[ext_resource type="Texture2D" uid="uid://cc8175gi2quuq" path="res://Sprites/PotentialAssets/FreeKnight_v1/Colour1/Outline/120x80_PNGSheets/_Run.png" id="1_n2g17"]
+[ext_resource type="Texture2D" uid="uid://difk5lcgooriu" path="res://Sprites/PotentialAssets/FreeKnight_v1/Colour1/Outline/120x80_PNGSheets/_Idle.png" id="2_ovunf"]
+[ext_resource type="PackedScene" uid="uid://boxw8nhvi4650" path="res://Scenes/Weapons/SwordClickSwing.tscn" id="2_sjtap"]
+[ext_resource type="Script" path="res://Scripts/PlayerCam.gd" id="3_mg8q3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x1nhy"]
+atlas = ExtResource("2_ovunf")
+region = Rect2(0, 40, 120, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rqxky"]
+atlas = ExtResource("1_n2g17")
+region = Rect2(0, 40, 120, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2qppt"]
+atlas = ExtResource("1_n2g17")
+region = Rect2(120, 40, 120, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i34ya"]
+atlas = ExtResource("1_n2g17")
+region = Rect2(240, 40, 120, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_73f2m"]
+atlas = ExtResource("1_n2g17")
+region = Rect2(360, 40, 120, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hu7no"]
+atlas = ExtResource("1_n2g17")
+region = Rect2(480, 40, 120, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ya3fm"]
+atlas = ExtResource("1_n2g17")
+region = Rect2(600, 40, 120, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wjy5a"]
+atlas = ExtResource("1_n2g17")
+region = Rect2(720, 40, 120, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4civg"]
+atlas = ExtResource("1_n2g17")
+region = Rect2(840, 40, 120, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_56btr"]
+atlas = ExtResource("1_n2g17")
+region = Rect2(960, 40, 120, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2g0h5"]
+atlas = ExtResource("1_n2g17")
+region = Rect2(1080, 40, 120, 40)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3qsf1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x1nhy")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rqxky")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2qppt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i34ya")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_73f2m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hu7no")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ya3fm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wjy5a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4civg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_56btr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2g0h5")
+}],
+"loop": true,
+"name": &"moving",
+"speed": 15.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_52tli"]
+size = Vector2(19, 36.58)
+
+[node name="Knight" type="CharacterBody2D"]
+collision_mask = 4
+script = ExtResource("1_hjfc1")
+launchForce = 1000.0
+
+[node name="SwordClickSwing" parent="." instance=ExtResource("2_sjtap")]
+scale = Vector2(2, 2)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_3qsf1")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2.5, 1.29)
+shape = SubResource("RectangleShape2D_52tli")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("3_mg8q3")

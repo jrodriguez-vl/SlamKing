@@ -1,0 +1,67 @@
+[gd_scene load_steps=11 format=3 uid="uid://bun0ox3ts81ad"]
+
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_64d7g"]
+[ext_resource type="Texture2D" uid="uid://c0jbl1bhnljlo" path="res://Sprites/lavaboy-walking.png" id="1_n8su4"]
+[ext_resource type="PackedScene" uid="uid://boxw8nhvi4650" path="res://Scenes/Weapons/SwordClickSwing.tscn" id="3_k4c67"]
+[ext_resource type="Script" path="res://Scripts/PlayerCam.gd" id="4_upuqa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aftcr"]
+size = Vector2(2.5, 17.5317)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k1t0h"]
+atlas = ExtResource("1_n8su4")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hiuwk"]
+atlas = ExtResource("1_n8su4")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4g6f5"]
+atlas = ExtResource("1_n8su4")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_klvyi"]
+atlas = ExtResource("1_n8su4")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pgkid"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k1t0h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hiuwk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4g6f5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_klvyi")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[node name="Player" type="CharacterBody2D"]
+scale = Vector2(3, 3)
+collision_mask = 4
+script = ExtResource("1_64d7g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.583, 2.09917)
+shape = SubResource("RectangleShape2D_aftcr")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_pgkid")
+animation = &"walk"
+frame = 2
+frame_progress = 0.485478
+
+[node name="SwordClickSwing" parent="." instance=ExtResource("3_k4c67")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("4_upuqa")
+
+[connection signal="Launch" from="SwordClickSwing" to="." method="_on_sword_click_swing_launch"]

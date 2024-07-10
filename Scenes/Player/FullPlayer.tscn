@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://kx853afkrlue"]
+
+[ext_resource type="PackedScene" uid="uid://bun0ox3ts81ad" path="res://Scenes/Player/Player.tscn" id="1_g0eib"]
+[ext_resource type="PackedScene" uid="uid://bi727h224xcyb" path="res://Scenes/Weapons/Sword.tscn" id="2_4itde"]
+
+[node name="FullPlayer" type="Node2D"]
+position = Vector2(156, 125)
+scale = Vector2(3, 3)
+metadata/_edit_group_ = true
+
+[node name="Player" parent="." instance=ExtResource("1_g0eib")]
+scale = Vector2(1, 1)
+launchForce = 1000.0
+
+[node name="Sword2" parent="Player" instance=ExtResource("2_4itde")]
+position = Vector2(-0.514999, 3)
+scale = Vector2(1, 1)
+windupSpeed = 500.0
+swingSpeed = 1000.0
+
+[connection signal="Launch" from="Player/Sword2" to="Player" method="_on_sword_launch"]

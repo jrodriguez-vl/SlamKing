@@ -9,12 +9,15 @@ extends Node2D
 
 signal Launch
 
-var collider: CollisionShape2D
+var baseCollider: CollisionShape2D
+var tipCollider: CollisionShape2D
 var swordBody: Node2D
 var player: CharacterBody2D
 
 
 var swingTimer: Timer
+var collisionTimer: Timer
+
 var chargedRotation: float
 var swinging: bool
 var waitingForNextSwing: bool = true
@@ -26,14 +29,15 @@ var maxReverseSwingRotation: float = 70
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	swingTimer = get_node("SwingTimer")
+	collisionTimer = get_node("CollisionTimer")
 	player = get_parent()
 	swordBody = get_node("SwordBody")
-	collider = get_node("SwordBody/Area2D/CollisionShape2D")
+	baseCollider = get_node("SwordBody/BaseArea2D/CollisionShape2D")
+	tipCollider = get_node("SwordBody/TipArea2D/CollisionShape2D")
 	swinging = false
 
 func _process(delta):
 	rotationPoint.global_rotation_degrees = 0
-	collider.disabled = !swinging
 	swing(delta)
 
 func swing(delta):
@@ -44,11 +48,13 @@ func swing(delta):
 			swordBody.global_rotation_degrees += amountToRotate
 
 			if swordBody.global_rotation_degrees >= maxSwingRotation:
+				# enableColliders()
 				swinging = false
 		else:
 			swordBody.global_rotation_degrees -= amountToRotate
 
 			if swordBody.global_rotation_degrees <= maxReverseSwingRotation && swordBody.global_rotation_degrees > 0:
+				# enableColliders()
 				swinging = false
 
 	elif Input.is_action_just_pressed("swing") && !swinging && waitingForNextSwing:
@@ -75,23 +81,69 @@ func swing(delta):
 
 # 	print("collided")
 # 	swinging = false
-# 	collider.set_deferred("disabled", true)
+# 	baseCollider.set_deferred("disabled", true)
 # 	print(swordBody.rotation)
 # 	Launch.emit(swordBody.global_rotation)
 # 	# maybe kick up some animation at the trigger point
 
-func _on_area_2d_body_entered(body):
-	if !swinging:
+func _on_area_2d_body_entered(_body):
+	if !swinging || !collisionTimer.is_stopped():
 		return
 
+	print("swordbody")
+	collisionTimer.start()
 	swinging = false
-	collider.set_deferred("disabled", true)
+	disableColliders(true)
 	print(swordBody.rotation)
-	Launch.emit(swordBody.global_rotation)
+	Launch.emit(swordBody.global_rotation, false)
 	# maybe kick up some animation at the trigger point
 
 
 func _on_click_timer_timeout():
 	print("timeout")
-	
+	enableColliders(true)
 	waitingForNextSwing = true
+
+func _on_tip_area_2d_body_entered(_body:Node2D):
+	if !swinging || !collisionTimer.is_stopped():
+		return
+	print("just the tip")
+	collisionTimer.start()
+	swinging = false
+	disableColliders(true)
+	print(swordBody.rotation)
+	Launch.emit(swordBody.global_rotation, true)
+
+
+func disableColliders(isDeferred: bool = false):
+	if isDeferred:
+		baseCollider.set_deferred("disabled", true)
+		tipCollider.set_deferred("disabled", true)
+	else:
+		baseCollider.disabled = true
+		tipCollider.disabled = true
+	
+func enableColliders(isDeferred: bool = false):
+	if isDeferred:
+		baseCollider.set_deferred("disabled", false)
+		tipCollider.set_deferred("disabled", false)
+	else:
+		baseCollider.disabled = false
+		tipCollider.disabled = false
+	
+
+func _on_collision_timer_timeout():
+	pass # Replace with function body.
+
+
+func _on_base_area_2d_body_entered(body):
+	if !swinging || !collisionTimer.is_stopped():
+		return
+
+	print("swordbody")
+	collisionTimer.start()
+	swinging = false
+	disableColliders(true)
+	print(swordBody.rotation)
+	Launch.emit(swordBody.global_rotation, false)
+	# maybe kick up some animation at the trigger point

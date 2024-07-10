@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://b5f6bo82umumv"]
+
+[ext_resource type="Script" path="res://Scripts/PhysicsSword.gd" id="1_ymmmk"]
+[ext_resource type="Texture2D" uid="uid://bd3kdfc1vg2wn" path="res://Sprites/bigolsword3.png" id="2_qbyvf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_me06x"]
+size = Vector2(6.08, 19.19)
+
+[node name="PhysicsSword" type="RigidBody2D"]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("1_ymmmk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(4, 4)
+texture = ExtResource("2_qbyvf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -14)
+scale = Vector2(4, 4)
+shape = SubResource("RectangleShape2D_me06x")

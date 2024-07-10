@@ -1,0 +1,86 @@
+[gd_scene load_steps=4 format=3 uid="uid://cfw0tdti3qfsh"]
+
+[ext_resource type="PackedScene" uid="uid://77bv584i3qjx" path="res://Scenes/GrassFloor.tscn" id="1_fkwbw"]
+[ext_resource type="PackedScene" uid="uid://bf257cbx8y3si" path="res://Scenes/Player/Knight.tscn" id="2_bwvu0"]
+[ext_resource type="PackedScene" uid="uid://bun0ox3ts81ad" path="res://Scenes/Player/Player.tscn" id="2_jcdje"]
+
+[node name="Level1" type="Node2D"]
+
+[node name="Platforms" type="Node2D" parent="."]
+
+[node name="GrassFloor" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(760, 580)
+scale = Vector2(66.45, 2)
+
+[node name="GrassFloor2" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(531, 326)
+scale = Vector2(17.295, 2)
+
+[node name="GrassFloor4" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(888, 221)
+
+[node name="GrassFloor5" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(917, 189)
+
+[node name="GrassFloor6" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(962, 154)
+
+[node name="GrassFloor7" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(994, 117)
+
+[node name="GrassFloor8" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(1026, 90)
+
+[node name="GrassFloor14" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(1119, -49)
+
+[node name="GrassFloor15" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(1170, -52)
+
+[node name="GrassFloor16" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(1218, -252)
+
+[node name="GrassFloor17" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(1269, -255)
+
+[node name="GrassFloor18" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(911, -383)
+
+[node name="GrassFloor19" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(782, -383)
+
+[node name="GrassFloor20" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(911, -383)
+
+[node name="GrassFloor22" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(404, -586)
+scale = Vector2(34.81, 2)
+
+[node name="GrassFloor21" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(846, -383)
+
+[node name="GrassFloor9" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(701, 82)
+
+[node name="GrassFloor10" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(730, 50)
+
+[node name="GrassFloor11" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(775, 15)
+
+[node name="GrassFloor12" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(807, -22)
+
+[node name="GrassFloor13" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(839, -49)
+
+[node name="GrassFloor3" parent="Platforms" instance=ExtResource("1_fkwbw")]
+position = Vector2(37, 430)
+scale = Vector2(2, 9.085)
+
+[node name="Knight" parent="." instance=ExtResource("2_bwvu0")]
+position = Vector2(365, 489)
+
+[node name="Player" parent="." instance=ExtResource("2_jcdje")]
+position = Vector2(187, 470)
+launchForce = 1000.0
