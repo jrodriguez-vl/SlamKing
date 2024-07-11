@@ -1,11 +1,16 @@
 extends CharacterBody2D
 
-@export var moveSpeed: float = 150
-@export var maxMoveSpeed: float = 250
+
 @export var gravity: float = 1500
-@export var launchForce: float = 500
+
 @export var floorFriction: float  = .1
 @export var airFriction: float  = .01
+
+@export var moveSpeed: float = 40
+@export var maxMoveSpeed: float = 250
+
+@export var launchForce: float = 500
+@export var maxLaunchForce: float = 650
 
 var sprite: AnimatedSprite2D
 
@@ -27,6 +32,7 @@ func captureInput():
 	else:
 		if is_on_floor():
 			velocity.x = lerpf(velocity.x, 0, .5)
+
 		sprite.play("idle")
 
 	if (direction < 0 && velocity.x >=0) || (direction > 0 && velocity.x <= 0) || (!abs(velocity.x) > maxMoveSpeed):
@@ -54,3 +60,15 @@ func _on_sword_click_swing_launch(contactRad: float, isTheTip: bool):
 
 	velocity.y += -launchForce * smackVelocity.y
 	velocity.x += -launchForce * smackVelocity.x
+
+	if velocity.y > 0:
+		velocity.y = min(velocity.y, maxLaunchForce)
+	elif velocity.y < 0:
+		velocity.y = max(velocity.y, -maxLaunchForce)
+
+	if velocity.x > 0:
+		velocity.x = min(velocity.x, maxLaunchForce)
+	elif velocity.x < 0:
+		velocity.x = max(velocity.x, -maxLaunchForce)
+
+	print(velocity)

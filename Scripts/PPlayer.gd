@@ -54,3 +54,12 @@ func _physics_process(delta):
 
 # 	velocity.y += -launchForce * smackVelocity.y
 # 	velocity.x += -launchForce * smackVelocity.x
+
+
+func _on_physics_sword_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
+	pass # Replace with function body.
+
+
+func _on_physics_sword_body_entered(body):
+	print(body.name)
+	pass # Replace with function body.

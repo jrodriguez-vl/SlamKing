@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_64d7g"]
 [ext_resource type="Texture2D" uid="uid://c0jbl1bhnljlo" path="res://Sprites/lavaboy-walking.png" id="1_n8su4"]
-[ext_resource type="PackedScene" uid="uid://boxw8nhvi4650" path="res://Scenes/Weapons/SwordClickSwing.tscn" id="3_k4c67"]
+[ext_resource type="PackedScene" uid="uid://boxw8nhvi4650" path="res://Scenes/Weapons/SwordAimAndClickSwing.tscn" id="3_k4c67"]
 [ext_resource type="Script" path="res://Scripts/PlayerCam.gd" id="4_upuqa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aftcr"]

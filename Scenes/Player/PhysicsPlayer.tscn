@@ -67,3 +67,6 @@ shape = SubResource("RectangleShape2D_7ood7")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("4_wu5yq")
+
+[connection signal="body_entered" from="PinJoint2D/PhysicsSword" to="." method="_on_physics_sword_body_entered"]
+[connection signal="body_shape_entered" from="PinJoint2D/PhysicsSword" to="." method="_on_physics_sword_body_shape_entered"]

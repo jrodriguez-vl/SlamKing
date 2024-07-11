@@ -21,9 +21,9 @@ var collisionTimer: Timer
 var chargedRotation: float
 var swinging: bool
 var waitingForNextSwing: bool = true
+var isLeftOfMouse: bool
 var isSwingingRight: bool
 
-var previousDirection: float
 var windbackDegrees: float = -90
 var maxReverseSwingRotation: float = 70
 
@@ -39,7 +39,7 @@ func _ready():
 
 func _process(delta):
 	rotationPoint.global_rotation_degrees = 0
-	clickSwing(delta)
+	swing(delta)
 
 func clickSwing(delta):
 	if swinging:
@@ -49,17 +49,14 @@ func clickSwing(delta):
 			swordBody.global_rotation_degrees += amountToRotate
 
 			if swordBody.global_rotation_degrees >= maxSwingRotation:
+				# enableColliders()
 				swinging = false
 		else:
 			swordBody.global_rotation_degrees -= amountToRotate
 
 			if swordBody.global_rotation_degrees <= maxReverseSwingRotation && swordBody.global_rotation_degrees > 0:
+				# enableColliders()
 				swinging = false
-		
-		if !swinging:
-			swordBody.global_rotation_degrees = windbackDegrees + (previousDirection * windbackOffset)
-
-
 
 	elif (Input.is_action_just_pressed("swing") || Input.is_action_just_pressed("swing_l")) && !swinging && waitingForNextSwing:
 		swinging = true
@@ -68,10 +65,63 @@ func clickSwing(delta):
 		swingTimer.start()
 
 	else:
-		var axis = -Input.get_axis("walk_left", "walk_right")
-		if axis != 0:
-			previousDirection = axis
-			swordBody.global_rotation_degrees = windbackDegrees + (axis * windbackOffset)
+		var mousePos = get_global_mouse_position()
+		isLeftOfMouse = player.global_position.x < mousePos.x
+
+		var point = rotationPoint.get_angle_to(mousePos)
+		var degrees = rad_to_deg(point)
+		
+		var direction = 90
+		if isLeftOfMouse:
+			direction *= -1
+
+		swordBody.global_rotation_degrees = degrees + direction
+
+func swing(delta):
+	if swinging:
+		var amountToRotate = delta * swingSpeed
+
+		if isLeftOfMouse:
+			swordBody.global_rotation_degrees += amountToRotate
+
+			if swordBody.global_rotation_degrees >= maxSwingRotation:
+				# enableColliders()
+				swinging = false
+		else:
+			swordBody.global_rotation_degrees -= amountToRotate
+
+			if swordBody.global_rotation_degrees <= maxReverseSwingRotation && swordBody.global_rotation_degrees > 0:
+				# enableColliders()
+				swinging = false
+
+	elif Input.is_action_just_pressed("swing") && !swinging && waitingForNextSwing:
+		swinging = true
+		waitingForNextSwing = false
+		swingTimer.start()
+
+	else:
+		var mousePos = get_global_mouse_position()
+		isLeftOfMouse = player.global_position.x < mousePos.x
+
+		var point = rotationPoint.get_angle_to(mousePos)
+		var degrees = rad_to_deg(point)
+		
+		var direction = 90
+		if isLeftOfMouse:
+			direction *= -1
+
+		swordBody.global_rotation_degrees = degrees + direction
+
+# func _on_area_2d_body_entered(body):
+# 	if !swinging:
+# 		return
+
+# 	print("collided")
+# 	swinging = false
+# 	baseCollider.set_deferred("disabled", true)
+# 	print(swordBody.rotation)
+# 	Launch.emit(swordBody.global_rotation)
+# 	# maybe kick up some animation at the trigger point
 
 func _on_area_2d_body_entered(_body):
 	if !swinging || !collisionTimer.is_stopped():
@@ -87,7 +137,15 @@ func _on_area_2d_body_entered(_body):
 func _on_click_timer_timeout():
 	enableColliders(true)
 	waitingForNextSwing = true
-	swordBody.global_rotation_degrees = windbackDegrees + (previousDirection * windbackOffset)
+
+func _on_tip_area_2d_body_entered(_body:Node2D):
+	if !swinging || !collisionTimer.is_stopped():
+		return
+	collisionTimer.start()
+	swinging = false
+	disableColliders(true)
+	Launch.emit(swordBody.global_rotation, true)
+
 
 func disableColliders(isDeferred: bool = false):
 	if isDeferred:

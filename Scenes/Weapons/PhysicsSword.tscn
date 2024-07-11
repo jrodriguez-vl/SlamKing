@@ -19,3 +19,7 @@ texture = ExtResource("2_qbyvf")
 position = Vector2(0, -14)
 scale = Vector2(4, 4)
 shape = SubResource("RectangleShape2D_me06x")
+debug_color = Color(0.714771, 0.483163, 1.92523e-07, 0.42)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

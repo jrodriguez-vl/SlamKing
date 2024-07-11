@@ -2,9 +2,16 @@ extends Camera2D
 
 var player: Node2D
 
+@export var shouldLockX: bool
+@export var lockCamX: float
+
 func _ready():
 	player = get_parent()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	global_position = player.global_position
+	var setPos = player.global_position
+	if shouldLockX:
+		setPos.x = lockCamX
+
+	global_position = setPos

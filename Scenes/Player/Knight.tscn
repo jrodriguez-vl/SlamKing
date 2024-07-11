@@ -1,9 +1,10 @@
-[gd_scene load_steps=19 format=3 uid="uid://bf257cbx8y3si"]
+[gd_scene load_steps=20 format=3 uid="uid://bf257cbx8y3si"]
 
 [ext_resource type="Script" path="res://Scripts/Knight.gd" id="1_hjfc1"]
 [ext_resource type="Texture2D" uid="uid://cc8175gi2quuq" path="res://Sprites/PotentialAssets/FreeKnight_v1/Colour1/Outline/120x80_PNGSheets/_Run.png" id="1_n2g17"]
+[ext_resource type="Script" path="res://Scripts/PlayerDebugLabel.gd" id="2_3fbjr"]
 [ext_resource type="Texture2D" uid="uid://difk5lcgooriu" path="res://Sprites/PotentialAssets/FreeKnight_v1/Colour1/Outline/120x80_PNGSheets/_Idle.png" id="2_ovunf"]
-[ext_resource type="PackedScene" uid="uid://boxw8nhvi4650" path="res://Scenes/Weapons/SwordClickSwing.tscn" id="2_sjtap"]
+[ext_resource type="PackedScene" uid="uid://2dqbb652hriq" path="res://Scenes/Weapons/SwordClickSwing.tscn" id="2_sjtap"]
 [ext_resource type="Script" path="res://Scripts/PlayerCam.gd" id="3_mg8q3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_x1nhy"]
@@ -102,10 +103,24 @@ size = Vector2(19, 36.58)
 [node name="Knight" type="CharacterBody2D"]
 collision_mask = 4
 script = ExtResource("1_hjfc1")
-launchForce = 1000.0
+moveSpeed = 30.0
+
+[node name="DebugStats" type="RichTextLabel" parent="."]
+offset_left = -32.0
+offset_top = -61.0
+offset_right = 29.0
+offset_bottom = -21.0
+text = "Velocity"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+script = ExtResource("2_3fbjr")
+
+[node name="DebugStatsTimer" type="Timer" parent="DebugStats"]
+wait_time = 0.1
+autostart = true
 
 [node name="SwordClickSwing" parent="." instance=ExtResource("2_sjtap")]
-scale = Vector2(2, 2)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_3qsf1")
@@ -116,7 +131,11 @@ position = Vector2(-2.5, 1.29)
 shape = SubResource("RectangleShape2D_52tli")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.36, 1.36)
 position_smoothing_enabled = true
 script = ExtResource("3_mg8q3")
+shouldLockX = true
+lockCamX = 207.07
 
+[connection signal="timeout" from="DebugStats/DebugStatsTimer" to="DebugStats" method="_on_debug_stats_timer_timeout"]
 [connection signal="Launch" from="SwordClickSwing" to="." method="_on_sword_click_swing_launch"]

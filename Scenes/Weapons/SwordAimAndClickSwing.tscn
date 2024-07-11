@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://2dqbb652hriq"]
+[gd_scene load_steps=5 format=3 uid="uid://boxw8nhvi4650"]
 
-[ext_resource type="Script" path="res://Scripts/SwordClickSwing.gd" id="1_y714d"]
-[ext_resource type="Texture2D" uid="uid://bd3kdfc1vg2wn" path="res://Sprites/bigolsword3.png" id="2_2ics2"]
+[ext_resource type="Script" path="res://Scripts/SwordAimAndClickSwing.gd" id="1_7oln8"]
+[ext_resource type="Texture2D" uid="uid://bd3kdfc1vg2wn" path="res://Sprites/bigolsword3.png" id="2_5wrsp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_513ic"]
 size = Vector2(19.567, 5.825)
@@ -9,9 +9,8 @@ size = Vector2(19.567, 5.825)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nsrox"]
 size = Vector2(1.185, 1.242)
 
-[node name="SwordClickSwing" type="Node2D" node_paths=PackedStringArray("rotationPoint")]
-scale = Vector2(2, 2)
-script = ExtResource("1_y714d")
+[node name="SwordAimAndClickSwing" type="Node2D" node_paths=PackedStringArray("rotationPoint")]
+script = ExtResource("1_7oln8")
 rotationPoint = NodePath("RotationPoint")
 
 [node name="RotationPoint" type="Node2D" parent="."]
@@ -21,7 +20,7 @@ position = Vector2(-13.06, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="SwordBody"]
 rotation = 1.5708
-texture = ExtResource("2_2ics2")
+texture = ExtResource("2_5wrsp")
 centered = false
 offset = Vector2(-16.215, -28.68)
 
