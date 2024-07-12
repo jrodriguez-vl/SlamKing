@@ -63,15 +63,22 @@ func clickSwing(delta):
 
 	elif (Input.is_action_just_pressed("swing") || Input.is_action_just_pressed("swing_l")) && !swinging && waitingForNextSwing:
 		swinging = true
-		isSwingingRight = Input.is_action_just_pressed("swing")
+		# isSwingingRight = Input.is_action_just_pressed("swing")
+		isSwingingRight = previousDirection == 1
 		waitingForNextSwing = false
 		swingTimer.start()
 
 	else:
-		var axis = -Input.get_axis("walk_left", "walk_right")
+		var axis = 0
+		if Input.is_action_pressed("walk_left"):
+			axis = 1
+		elif Input.is_action_pressed("walk_right"):
+			axis = -1
+
 		if axis != 0:
 			previousDirection = axis
 			swordBody.global_rotation_degrees = windbackDegrees + (axis * windbackOffset)
+		print(previousDirection)
 
 func _on_area_2d_body_entered(_body):
 	if !swinging || !collisionTimer.is_stopped():
@@ -107,6 +114,7 @@ func enableColliders(isDeferred: bool = false):
 	
 
 func _on_base_area_2d_body_entered(body):
+	print("asdf")
 	if !swinging || !collisionTimer.is_stopped():
 		return
 

@@ -19,31 +19,36 @@ func _ready():
 	sprite = $AnimatedSprite2D
 
 
-func captureInput():
+func captureInput(delta):
 	if is_on_floor():
 		velocity.x = lerpf(velocity.x, 0, floorFriction)
 	else:
 		velocity.x = lerpf(velocity.x, 0, airFriction)
 
-	var direction = Input.get_axis("walk_left", "walk_right") * moveSpeed
-	if direction != 0:
-		sprite.flip_h = direction < 0
+	var currentMove = Input.get_axis("walk_left", "walk_right") * moveSpeed * delta
+	if currentMove != 0:
+		sprite.flip_h = currentMove < 0
 		sprite.play("moving")
 	else:
 		if is_on_floor():
-			velocity.x = lerpf(velocity.x, 0, .5)
-
+			velocity.x = lerpf(velocity.x, 0, .1)
 		sprite.play("idle")
 
-	if (direction < 0 && velocity.x >=0) || (direction > 0 && velocity.x <= 0) || (!abs(velocity.x) > maxMoveSpeed):
-		velocity.x += direction
+
+	var potentialMoveSpeed = currentMove + velocity.x
+
+	if potentialMoveSpeed >= 0:
+		velocity.x = clampf(potentialMoveSpeed, 0, maxMoveSpeed)
+	else:
+		velocity.x = clampf(potentialMoveSpeed, -maxMoveSpeed, 0)
+
 
 
 func _physics_process(delta):
 	if !is_on_floor():
 		velocity.y += gravity * delta
 
-	captureInput()
+	captureInput(delta)
 	move_and_slide()
 
 func _on_sword_click_swing_launch(contactRad: float, isTheTip: bool):
