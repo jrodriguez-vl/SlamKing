@@ -1,16 +1,14 @@
 extends Node2D
 
 @export var rotationPoint: Node2D
-@export var windupSpeed: float = 100
 @export var swingSpeed: float = 1000
-@export var maxSwingRotation: float = 110
+@export var maxSwingRotation: float = 150
 @export var windbackOffset: float = 20
 
 
 signal Launch
 
 var baseCollider: CollisionShape2D
-var tipCollider: CollisionShape2D
 var swordBody: Node2D
 var player: CharacterBody2D
 
@@ -23,9 +21,9 @@ var swinging: bool
 var waitingForNextSwing: bool = true
 var isSwingingRight: bool
 
-var previousDirection: float
+var previousAxis: float = 1
 var windbackDegrees: float = -90
-var maxReverseSwingRotation: float = 70
+var amountRotated: float = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -34,7 +32,6 @@ func _ready():
 	player = get_parent()
 	swordBody = get_node("SwordBody")
 	baseCollider = get_node("SwordBody/BaseArea2D/CollisionShape2D")
-	tipCollider = get_node("SwordBody/TipArea2D/CollisionShape2D")
 	swinging = false
 
 func _process(delta):
@@ -43,83 +40,63 @@ func _process(delta):
 
 func clickSwing(delta):
 	if swinging:
-		var amountToRotate = delta * swingSpeed
+		var amountToRotate = delta * swingSpeed * previousAxis
+		amountRotated += abs(amountToRotate)
 
-		if !isSwingingRight:
-			swordBody.global_rotation_degrees += amountToRotate
+		swordBody.global_rotation_degrees += amountToRotate
 
-			if swordBody.global_rotation_degrees >= maxSwingRotation:
-				swinging = false
-		else:
-			swordBody.global_rotation_degrees -= amountToRotate
-
-			if swordBody.global_rotation_degrees <= maxReverseSwingRotation && swordBody.global_rotation_degrees > 0:
-				swinging = false
+		if amountRotated >= maxSwingRotation:
+			swinging = false
 		
-		if !swinging:
-			swordBody.global_rotation_degrees = windbackDegrees + (previousDirection * windbackOffset)
-
-
-
+		
 	elif (Input.is_action_just_pressed("swing") || Input.is_action_just_pressed("swing_l")) && !swinging && waitingForNextSwing:
 		swinging = true
 		# isSwingingRight = Input.is_action_just_pressed("swing")
-		isSwingingRight = previousDirection == 1
+		enableColliders(true)
+		isSwingingRight = previousAxis == 1
 		waitingForNextSwing = false
+		amountRotated = 0
 		swingTimer.start()
 
 	else:
+		finishSwing()
 		var axis = 0
 		if Input.is_action_pressed("walk_left"):
-			axis = 1
-		elif Input.is_action_pressed("walk_right"):
 			axis = -1
+		elif Input.is_action_pressed("walk_right"):
+			axis = 1
 
 		if axis != 0:
-			previousDirection = axis
-			swordBody.global_rotation_degrees = windbackDegrees + (axis * windbackOffset)
-		print(previousDirection)
+			previousAxis = axis
 
-func _on_area_2d_body_entered(_body):
-	if !swinging || !collisionTimer.is_stopped():
-		return
-
-	collisionTimer.start()
-	swinging = false
-	disableColliders(true)
-	Launch.emit(swordBody.global_rotation, false)
-	# maybe kick up some animation at the trigger point
-
+		swordBody.global_rotation_degrees = windbackDegrees + (-previousAxis * windbackOffset)
 
 func _on_click_timer_timeout():
-	enableColliders(true)
+	# enableColliders(true)
 	waitingForNextSwing = true
-	swordBody.global_rotation_degrees = windbackDegrees + (previousDirection * windbackOffset)
+	# swordBody.global_rotation_degrees = windbackDegrees + (previousAxis * windbackOffset)
 
 func disableColliders(isDeferred: bool = false):
 	if isDeferred:
 		baseCollider.set_deferred("disabled", true)
-		tipCollider.set_deferred("disabled", true)
 	else:
 		baseCollider.disabled = true
-		tipCollider.disabled = true
 	
 func enableColliders(isDeferred: bool = false):
 	if isDeferred:
 		baseCollider.set_deferred("disabled", false)
-		tipCollider.set_deferred("disabled", false)
 	else:
 		baseCollider.disabled = false
-		tipCollider.disabled = false
 	
+func finishSwing():
+	swinging = false
+	disableColliders(true)
 
 func _on_base_area_2d_body_entered(body):
-	print("asdf")
-	if !swinging || !collisionTimer.is_stopped():
+	if !collisionTimer.is_stopped():
 		return
 
 	collisionTimer.start()
-	swinging = false
-	disableColliders(true)
+	finishSwing()
 	Launch.emit(swordBody.global_rotation, false)
 	# maybe kick up some animation at the trigger point

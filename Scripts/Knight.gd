@@ -52,6 +52,7 @@ func _physics_process(delta):
 	move_and_slide()
 
 func _on_sword_click_swing_launch(contactRad: float, isTheTip: bool):
+	print("ugghhh")
 	var smackVelocity = Vector2(0, 0)
 	contactRad = wrapf(contactRad,0,TAU)
 

@@ -1,13 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://2dqbb652hriq"]
+[gd_scene load_steps=4 format=3 uid="uid://2dqbb652hriq"]
 
 [ext_resource type="Script" path="res://Scripts/SwordClickSwing.gd" id="1_y714d"]
 [ext_resource type="Texture2D" uid="uid://bd3kdfc1vg2wn" path="res://Sprites/bigolsword3.png" id="2_2ics2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_513ic"]
 size = Vector2(19.567, 5.825)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_nsrox"]
-size = Vector2(1.185, 1.242)
 
 [node name="SwordClickSwing" type="Node2D" node_paths=PackedStringArray("rotationPoint")]
 scale = Vector2(2, 2)
@@ -33,16 +30,6 @@ collision_mask = 4
 position = Vector2(15.935, -0.2)
 shape = SubResource("RectangleShape2D_513ic")
 
-[node name="TipArea2D" type="Area2D" parent="SwordBody"]
-position = Vector2(24.38, 0)
-scale = Vector2(0.7, 0.7)
-collision_layer = 2
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SwordBody/TipArea2D"]
-position = Vector2(2.64, -0.28)
-shape = SubResource("RectangleShape2D_nsrox")
-
 [node name="SwingTimer" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
@@ -52,6 +39,5 @@ wait_time = 0.1
 one_shot = true
 
 [connection signal="body_entered" from="SwordBody/BaseArea2D" to="." method="_on_base_area_2d_body_entered"]
-[connection signal="body_entered" from="SwordBody/TipArea2D" to="." method="_on_tip_area_2d_body_entered"]
 [connection signal="timeout" from="SwingTimer" to="." method="_on_click_timer_timeout"]
 [connection signal="timeout" from="CollisionTimer" to="." method="_on_collision_timer_timeout"]

@@ -105,6 +105,7 @@ script = ExtResource("1_hjfc1")
 moveSpeed = 30.0
 
 [node name="SwordClickSwing" parent="." instance=ExtResource("2_sjtap")]
+maxSwingRotation = 190.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_3qsf1")
